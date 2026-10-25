@@ -1,14 +1,8 @@
-FROM node:18-alpine as installer
-WORKDIR /nodeapp
-COPY nodeapp /nodeapp
-RUN npm install
-
-
-FROM node:18-alpine 
-COPY --from=installer /nodeapp /nodeapp
-EXPOSE 3000
-CMD ["node", "/nodeapp/app.js"]
-
-
-
-
+FROM registry.access.redhat.com/ubi9/ubi
+RUN adduser \
+--no-create-home \
+--system \
+--shell /usr/sbin/nologin \
+python-server
+USER python-server
+CMD ["python3", "-m", "http.server"]
